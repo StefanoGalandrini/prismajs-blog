@@ -64,7 +64,7 @@ function getAllPosts()
 		.catch(error => console.error("Errore durante il recupero dei post:", error));
 }
 
-getAllPosts();
+// getAllPosts();
 
 
 function update(slug)
@@ -110,5 +110,19 @@ function update(slug)
 		.catch(error => console.error("Errore durante l'aggiornamento del post:", error));
 }
 
+// update("mille-modi-per-desiderare-di-morire");
 
-update("mille-modi-per-desiderare-di-morire");
+
+
+function destroy(slug)
+{
+	prisma.post.delete({
+		where: {
+			slug: slug
+		}
+	})
+		.then(() => console.log("Post eliminato"))
+		.catch(error => console.error("Errore durante l'eliminazione del post: ", error));
+}
+
+destroy("backend-cupio-dissolvi");
