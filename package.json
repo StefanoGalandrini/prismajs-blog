@@ -1,0 +1,31 @@
+{
+  "name": "prismajs-blog",
+  "version": "1.0.0",
+  "description": "Usando Prisma JS creare funzioni per implementare le CRUD di un modello",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StefanoGalandrini/prismajs-blog.git"
+  },
+  "keywords": [
+    "Node",
+    "Prisma",
+    "Database",
+    "CRUD"
+  ],
+  "author": "Stefano Galandrini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StefanoGalandrini/prismajs-blog/issues"
+  },
+  "homepage": "https://github.com/StefanoGalandrini/prismajs-blog#readme",
+  "devDependencies": {
+    "prisma": "^5.6.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.6.0"
+  }
+}
