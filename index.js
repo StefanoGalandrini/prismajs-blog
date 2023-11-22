@@ -125,4 +125,24 @@ function destroy(slug)
 		.catch(error => console.error("Errore durante l'eliminazione del post: ", error));
 }
 
-destroy("backend-cupio-dissolvi");
+// destroy("backend-cupio-dissolvi");
+
+
+
+function getPublishedPosts()
+{
+	prisma.post.findMany({
+		where: {
+			published: true
+		}
+	})
+		.then(publishedPosts =>
+		{
+			console.log('Post pubblicati:', publishedPosts);
+		})
+		.catch(error => console.error('Errore durante il recupero dei post pubblicati:', error));
+}
+
+// Esempio di chiamata della funzione
+getPublishedPosts();
+
