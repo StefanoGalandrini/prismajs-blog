@@ -54,4 +54,14 @@ function find(slug)
 		.catch(error => console.error("Errore durante la ricerca del post:", error));
 }
 
-find("mille-modi-per-desiderare-di-morire");
+// find("mille-modi-per-desiderare-di-morire");
+
+
+function getAllPosts()
+{
+	prisma.post.findMany()
+		.then(posts => console.log('Tutti i post:', posts))
+		.catch(error => console.error('Errore durante il recupero dei post:', error));
+}
+
+getAllPosts();
