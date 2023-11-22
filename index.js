@@ -143,6 +143,24 @@ function getPublishedPosts()
 		.catch(error => console.error('Errore durante il recupero dei post pubblicati:', error));
 }
 
-// Esempio di chiamata della funzione
-getPublishedPosts();
+// getPublishedPosts();
 
+
+
+function getPostsByContent(contentString)
+{
+	prisma.post.findMany({
+		where: {
+			content: {
+				contains: contentString
+			}
+		}
+	})
+		.then(posts =>
+		{
+			console.log('Post contenenti la stringa:', posts);
+		})
+		.catch(error => console.error('Errore durante la ricerca dei post:', error));
+}
+
+getPostsByContent("backend");
