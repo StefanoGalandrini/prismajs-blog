@@ -12,11 +12,12 @@ datasource db {
 
 // creation of Model "Post" 
 model Post {
-  id          Int       @id @default(autoincrement())
-  title       String    @db.VarChar(100)
-  slug        String    @db.VarChar(150)
-  image       String?   @db.Text
-  published   Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(100)
+  slug      String   @db.VarChar(150)
+  image     String?  @db.Text
+  content   String   @db.Text
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

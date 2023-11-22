@@ -4,6 +4,7 @@ CREATE TABLE `Post` (
     `title` VARCHAR(100) NOT NULL,
     `slug` VARCHAR(150) NOT NULL,
     `image` TEXT NULL,
+    `content` TEXT NOT NULL,
     `published` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
