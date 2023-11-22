@@ -1,5 +1,12 @@
 # PRISMA JS BLOG
 
+## INSTRUCTIONS:
+
+1. To create a new empty Database, use migration: npx prisma migrate dev --name create_table_post
+2. To seed the Database with data from db.json file, use: node seedDB.js
+3. To execute functions call them in CLI: node index 'function name' (i.e. node index create)
+4. Parameters needed by each function are stored in index.js, change them from there
+
 ## Panoramica
 
 1. **Eseguire quanto segue:**
