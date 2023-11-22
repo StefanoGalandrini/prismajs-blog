@@ -45,10 +45,10 @@ function find(slug)
 		{
 			if (post)
 			{
-				console.log('Post trovato:', post);
+				console.log("Post trovato:", post);
 			} else
 			{
-				console.log('Nessun post trovato con lo slug:', slug);
+				console.log("Nessun post trovato con lo slug:", slug);
 			}
 		})
 		.catch(error => console.error("Errore durante la ricerca del post:", error));
@@ -60,8 +60,55 @@ function find(slug)
 function getAllPosts()
 {
 	prisma.post.findMany()
-		.then(posts => console.log('Tutti i post:', posts))
-		.catch(error => console.error('Errore durante il recupero dei post:', error));
+		.then(posts => console.log("Tutti i post:", posts))
+		.catch(error => console.error("Errore durante il recupero dei post:", error));
 }
 
 getAllPosts();
+
+
+function update(slug)
+{
+	let updateData = {
+		title: "Backend: cupio dissolvi",
+		content: "Il backend, in qualsiasi sua forma, è il male assoluto; esistono mille modi per lavorarci, ma alla fine si desidera sempre di morire.",
+		published: false
+	};
+
+	// Search if the post exists
+	prisma.post.findUnique({ where: { slug } })
+		.then((existingPost) =>
+		{
+			if (!existingPost)
+			{
+				console.log("Nessun post trovato con lo slug:", slug);
+				return;
+			}
+
+			// if title is changed, generate a new slug
+			// and add it to the updateData
+			if (updateData.title && updateData.title !== existingPost.title)
+			{
+				const newSlug = generateSlug(updateData.title);
+
+				updateData = { ...updateData, slug: newSlug };
+			}
+
+			// update post
+			return prisma.post.update({
+				where: { slug },
+				data: updateData
+			});
+		})
+		.then((updatedPost) =>
+		{
+			if (updatedPost)
+			{
+				console.log("Post aggiornato:", updatedPost);
+			}
+		})
+		.catch(error => console.error("Errore durante l'aggiornamento del post:", error));
+}
+
+
+update("mille-modi-per-desiderare-di-morire");
