@@ -1,166 +1,64 @@
-// import Prisma
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+// import functions
+const {
+	create,
+	find,
+	getAllPosts,
+	update,
+	destroy,
+	getPublishedPosts,
+	getPostsByContent
+} = require("./functions.js");
 
-// import modules
-const fs = require("fs");
-const path = require("path");
-const generateSlug = require("./generateSlug.js");
+const parameters = process.argv.slice(2);
 
-// function that reads initial data from json file
-// and seeds the database
+const postData = {
+	title: "Se non ci fosse il backend...",
+	image: "https://picsum.photos/200/300",
+	content: "Ci sono cose che non dovrebbero esistere, e il backend è una di queste. Non è possibile che esista qualcosa di così malvagio e perverso la cui logica scaturisce direttamente dalle profondità dell'inferno.",
+	published: false
+};
 
-function create()
+const slug = "se-non-ci-fosse-il-backend";
+
+const updateData = {
+	title: "Se non ci fosse il backend bisognerebbe farne a meno",
+	content: "Anche se ad alcuni piace, in realtà il backend è una perversione, qualcosa di malvagio e perverso la cui logica scaturisce direttamente dalle profondità dell'inferno.",
+	published: false
+};
+
+const contentString = "backend";
+
+
+switch (parameters[0])
 {
-	const postData = {
-		title: "Mille modi per desiderare di morire",
-		image: "https://picsum.photos/200/300",
-		content: "Il backend, in qualsiasi sua forma, è il male assoluto; per quanti modi si possano trovare per lavorarci, alla fine si desidera sempre di morire.",
-		published: true
-	};
+	case "create":
+		create(postData);
+		break;
 
-	const slug = generateSlug(postData.title);
+	case "find":
+		find(slug);
+		break;
 
+	case "getAllPosts":
+		getAllPosts();
+		break;
 
-	prisma.post.create({
-		data: {
-			...postData,
-			slug: slug
-		}
-	}).then(createdPost => console.log(`Post creato: ${createdPost.title}`));
+	case "update":
+		update(slug, updateData);
+		break;
+
+	case "destroy":
+		destroy(slug);
+		break;
+
+	case "getPublishedPosts":
+		getPublishedPosts();
+		break;
+
+	case "getPostsByContent":
+		getPostsByContent(contentString);
+		break;
+
+	default:
+		console.log("Comando non riconosciuto");
 }
-
-// create();
-
-
-// function that reads a Post using its slug
-function find(slug)
-{
-	prisma.post.findUnique({
-		where: {
-			slug: slug
-		}
-	})
-		.then(post =>
-		{
-			if (post)
-			{
-				console.log("Post trovato:", post);
-			} else
-			{
-				console.log("Nessun post trovato con lo slug:", slug);
-			}
-		})
-		.catch(error => console.error("Errore durante la ricerca del post:", error));
-}
-
-// find("mille-modi-per-desiderare-di-morire");
-
-
-function getAllPosts()
-{
-	prisma.post.findMany()
-		.then(posts => console.log("Tutti i post:", posts))
-		.catch(error => console.error("Errore durante il recupero dei post:", error));
-}
-
-// getAllPosts();
-
-
-function update(slug)
-{
-	let updateData = {
-		title: "Backend: cupio dissolvi",
-		content: "Il backend, in qualsiasi sua forma, è il male assoluto; esistono mille modi per lavorarci, ma alla fine si desidera sempre di morire.",
-		published: false
-	};
-
-	// Search if the post exists
-	prisma.post.findUnique({ where: { slug } })
-		.then((existingPost) =>
-		{
-			if (!existingPost)
-			{
-				console.log("Nessun post trovato con lo slug:", slug);
-				return;
-			}
-
-			// if title is changed, generate a new slug
-			// and add it to the updateData
-			if (updateData.title && updateData.title !== existingPost.title)
-			{
-				const newSlug = generateSlug(updateData.title);
-
-				updateData = { ...updateData, slug: newSlug };
-			}
-
-			// update post
-			return prisma.post.update({
-				where: { slug },
-				data: updateData
-			});
-		})
-		.then((updatedPost) =>
-		{
-			if (updatedPost)
-			{
-				console.log("Post aggiornato:", updatedPost);
-			}
-		})
-		.catch(error => console.error("Errore durante l'aggiornamento del post:", error));
-}
-
-// update("mille-modi-per-desiderare-di-morire");
-
-
-
-function destroy(slug)
-{
-	prisma.post.delete({
-		where: {
-			slug: slug
-		}
-	})
-		.then(() => console.log("Post eliminato"))
-		.catch(error => console.error("Errore durante l'eliminazione del post: ", error));
-}
-
-// destroy("backend-cupio-dissolvi");
-
-
-
-function getPublishedPosts()
-{
-	prisma.post.findMany({
-		where: {
-			published: true
-		}
-	})
-		.then(publishedPosts =>
-		{
-			console.log('Post pubblicati:', publishedPosts);
-		})
-		.catch(error => console.error('Errore durante il recupero dei post pubblicati:', error));
-}
-
-// getPublishedPosts();
-
-
-
-function getPostsByContent(contentString)
-{
-	prisma.post.findMany({
-		where: {
-			content: {
-				contains: contentString
-			}
-		}
-	})
-		.then(posts =>
-		{
-			console.log('Post contenenti la stringa:', posts);
-		})
-		.catch(error => console.error('Errore durante la ricerca dei post:', error));
-}
-
-getPostsByContent("backend");
