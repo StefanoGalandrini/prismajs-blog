@@ -14,7 +14,7 @@ datasource db {
 model Post {
   id        Int      @id @default(autoincrement())
   title     String   @db.VarChar(100)
-  slug      String   @db.VarChar(150)
+  slug      String   @unique @db.VarChar(150)
   image     String?  @db.Text
   content   String   @db.Text
   published Boolean  @default(false)
